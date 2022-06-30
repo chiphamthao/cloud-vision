@@ -1,6 +1,6 @@
 import sys, os
-from vision_cloud_ocr import TextRecognitor
-from ImageLabel import ImageLabel
+from TextRecognitor import TextRecognitor
+from DragNDrop import DragNDrop
 from PyQt6.QtQml import QQmlApplicationEngine
 from PyQt6.QtWidgets import QApplication, QWidget, QLabel, QVBoxLayout
 from PyQt6.QtCore import Qt
@@ -16,7 +16,7 @@ class ObjectDetector(QWidget, TextRecognitor):
         self.mainLayout = QVBoxLayout()
 
         self.setWindowTitle("My app")
-        self.photoViewer = ImageLabel()
+        self.photoViewer = DragNDrop()
         self.mainLayout.addWidget(self.photoViewer)
         self.mainLayout.addWidget(QLabel("Results: "))
     
