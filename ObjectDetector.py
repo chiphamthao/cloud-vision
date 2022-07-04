@@ -1,6 +1,7 @@
 import sys, os
-from vision_cloud_ocr import TextRecognitor
-from ImageLabel import ImageLabel
+from TextRecognitor import TextRecognitor
+from DragNDrop import DragNDrop
+from TextToSpeech import TextToSpeech
 from PyQt6.QtQml import QQmlApplicationEngine
 from PyQt6.QtWidgets import QApplication, QWidget, QLabel, QVBoxLayout
 from PyQt6.QtCore import Qt
@@ -16,7 +17,7 @@ class ObjectDetector(QWidget, TextRecognitor):
         self.mainLayout = QVBoxLayout()
 
         self.setWindowTitle("My app")
-        self.photoViewer = ImageLabel()
+        self.photoViewer = DragNDrop()
         self.mainLayout.addWidget(self.photoViewer)
         self.mainLayout.addWidget(QLabel("Results: "))
     
@@ -40,7 +41,7 @@ class ObjectDetector(QWidget, TextRecognitor):
             file_path = event.mimeData().urls()[0].toLocalFile()
             self.set_image(file_path)
             self.detect_text(file_path)
-            self.showResults(self.labels)
+            self.showResults(self.labels, self.sentence)
 
             event.accept()
         else:
@@ -49,11 +50,13 @@ class ObjectDetector(QWidget, TextRecognitor):
     def set_image(self, file_path):
         self.photoViewer.setPixmap(QPixmap(file_path))
 
-    def showResults(self, labels):
-        print(len(labels))
+    def showResults(self, labels, sentence):
         for label in labels:
             print(label)
             self.mainLayout.addWidget(QLabel(label + ", "))
+        self.showSpeech = TextToSpeech()
+        self.showSpeech.text_to_speech(sentence, "example.mp3")
+
 
 app = QApplication([])
 demo = ObjectDetector()
