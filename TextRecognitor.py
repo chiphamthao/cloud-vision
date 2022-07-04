@@ -6,6 +6,8 @@ class TextRecognitor:
         #super().__init__()
         #self.initUI()
         self.labels = []
+        self.positions = []
+        self.sentence = ""
         
     def detect_text(self, path):
         """Detects text in the file."""
@@ -21,15 +23,16 @@ class TextRecognitor:
 
         response = client.text_detection(image=image)
         texts = response.text_annotations
+        sentence = response.full_text_annotation.text
         print('Texts:')
-
         for text in texts:
             self.labels.append('\n"{}"'.format(text.description))
 
-            # vertices = (['({},{})'.format(vertex.x, vertex.y)
-            #             for vertex in text.bounding_poly.vertices])
+            vertices = (['({},{})'.format(vertex.x, vertex.y)
+                         for vertex in text.bounding_poly.vertices])
 
-            # print('bounds: {}'.format(','.join(vertices)))
+            #print('bounds: {}'.format(','.join(vertices)))
+            self.positions.append('bounds: {}'.format(','.join(vertices)))
     
         if response.error.message:
             raise Exception(
@@ -62,4 +65,5 @@ class TextRecognitor:
     #             '{}\nFor more info on error messages, check: '
     #             'https://cloud.google.com/apis/design/errors'.format(
     #                 response.error.message))
+
 
