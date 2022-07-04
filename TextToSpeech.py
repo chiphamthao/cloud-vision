@@ -1,12 +1,12 @@
 import html
 import io
 import os
-from TextRecognitor import TextRecognitor
+from TextRecognizer import TextRecognizer
 
 # Imports the Google Cloud client libraries
 from google.api_core.exceptions import AlreadyExists
 
-class TextToSpeech(TextRecognitor):
+class TextToSpeech(TextRecognizer):
     def __init__(self):
         super().__init__()
 

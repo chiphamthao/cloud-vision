@@ -1,7 +1,7 @@
 import io
 import os
 
-class TextRecognitor: 
+class TextRecognizer: 
     def __init__(self):
         #super().__init__()
         #self.initUI()
