@@ -4,7 +4,6 @@ import os
 class TextRecognizer: 
     def __init__(self):
         #super().__init__()
-        #self.initUI()
         self.labels = []
         self.positions = []
         self.sentence = ""
@@ -23,7 +22,8 @@ class TextRecognizer:
 
         response = client.text_detection(image=image)
         texts = response.text_annotations
-        sentence = response.full_text_annotation.text
+        self.sentence = response.full_text_annotation.text
+
         print('Texts:')
         for text in texts:
             self.labels.append('\n"{}"'.format(text.description))
