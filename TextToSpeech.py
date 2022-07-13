@@ -53,7 +53,9 @@ class TextToSpeech(TextRecognizer):
         response = client.synthesize_speech(request=request)
 
         # Writes the synthetic audio to the output file.
-        with open(outfile, "wb") as out:
+        with open(outfile, "w+b") as out:
             out.write(response.audio_content)
             print("Audio content written to file " + outfile)
+
+
                                      

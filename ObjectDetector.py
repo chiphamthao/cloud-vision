@@ -1,11 +1,12 @@
-import sys, os
+import sys, os, tempfile
 from TextRecognizer import TextRecognizer
 from DragNDrop import DragNDrop
 from TextToSpeech import TextToSpeech
 from PyQt6.QtQml import QQmlApplicationEngine
-from PyQt6.QtWidgets import QApplication, QWidget, QLabel, QVBoxLayout
-from PyQt6.QtCore import Qt
+from PyQt6.QtWidgets import QApplication, QWidget, QLabel, QVBoxLayout, QPushButton
+from PyQt6.QtCore import Qt, QUrl, QFileInfo
 from PyQt6.QtGui import QPixmap
+from PyQt6.QtMultimedia import QAudioOutput, QMediaPlayer
 
 class ObjectDetector(QWidget, TextRecognizer):
     def __init__(self):
@@ -22,6 +23,14 @@ class ObjectDetector(QWidget, TextRecognizer):
         self.mainLayout.addWidget(QLabel("Results: "))
     
         self.setLayout(self.mainLayout)
+
+        btn = QPushButton('Play', clicked=self.playAudioFile)
+        self.mainLayout.addWidget(btn)
+
+        self.player = QMediaPlayer()
+        self.audio_output = QAudioOutput()
+
+        self.temp = tempfile.NamedTemporaryFile(suffix=".mp3")
 
     def dragEnterEvent(self, event):
         if event.mimeData().hasImage:
@@ -53,10 +62,19 @@ class ObjectDetector(QWidget, TextRecognizer):
     def showResults(self, labels, sentence):
         for label in labels:
             print(label)
-            self.mainLayout.addWidget(QLabel(label + ", "))
+            self.mainLayout.addWidget(QLabel(label + ","))
         self.showSpeech = TextToSpeech()
-        self.showSpeech.text_to_speech(sentence, "example.mp3")
+        self.showSpeech.text_to_speech(sentence, self.temp.name)
 
+    def playAudioFile(self):
+        filename = self.temp.name
+        print(os.path.getsize(filename))
+        self.player.setAudioOutput(self.audio_output)
+        self.player.setSource(QUrl.fromLocalFile(filename))
+        self.audio_output.setVolume(0.7)
+        self.player.play()
+
+        #self.temp.close()
 
 app = QApplication([])
 demo = ObjectDetector()
