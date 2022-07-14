@@ -23,7 +23,7 @@ class TextToSpeech(TextRecognizer):
         # Convert plaintext to SSML in order to wait two seconds
         #   between each line in synthetic speech
         ssml = "<speak>{}</speak>".format(
-            escaped_lines.replace("\n", '\n<break time="2s"/>')
+            escaped_lines.replace("\n", '\n<break time="1gits"/>')
         )
 
         # Instantiates a client

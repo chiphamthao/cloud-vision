@@ -1,4 +1,5 @@
 import sys, os, tempfile
+from ObjectLocalization import ObjectLocalization
 from TextRecognizer import TextRecognizer
 from DragNDrop import DragNDrop
 from TextToSpeech import TextToSpeech
@@ -20,7 +21,7 @@ class ObjectDetector(QWidget, TextRecognizer):
         self.setWindowTitle("My app")
         self.photoViewer = DragNDrop()
         self.mainLayout.addWidget(self.photoViewer)
-        self.mainLayout.addWidget(QLabel("Results: "))
+        self.mainLayout.addWidget(QLabel("Press 'Play' to hear the results: "))
     
         self.setLayout(self.mainLayout)
 
@@ -50,7 +51,11 @@ class ObjectDetector(QWidget, TextRecognizer):
             file_path = event.mimeData().urls()[0].toLocalFile()
             self.set_image(file_path)
             self.detect_text(file_path)
-            self.showResults(self.labels, self.sentence)
+            self.showLabel = ObjectLocalization()
+            self.showLabel.localize_objects(file_path)
+            fullSentence = "The " + self.showLabel.imageLabels[0] + " says " + self.sentence
+            print(fullSentence)
+            self.showResults(self.labels, fullSentence)
 
             event.accept()
         else:
@@ -60,15 +65,14 @@ class ObjectDetector(QWidget, TextRecognizer):
         self.photoViewer.setPixmap(QPixmap(file_path))
 
     def showResults(self, labels, sentence):
-        for label in labels:
-            print(label)
-            self.mainLayout.addWidget(QLabel(label + ","))
+        # for label in labels:
+        #     print(label)
+        #     self.mainLayout.addWidget(QLabel(label + ","))
         self.showSpeech = TextToSpeech()
         self.showSpeech.text_to_speech(sentence, self.temp.name)
 
     def playAudioFile(self):
         filename = self.temp.name
-        print(os.path.getsize(filename))
         self.player.setAudioOutput(self.audio_output)
         self.player.setSource(QUrl.fromLocalFile(filename))
         self.audio_output.setVolume(0.7)

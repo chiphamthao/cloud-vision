@@ -26,7 +26,8 @@ class TextRecognizer:
 
         print('Texts:')
         for text in texts:
-            self.labels.append('\n"{}"'.format(text.description))
+            #self.labels.append('\n"{}"'.format(text.description))
+            self.labels.append('{}'.format(text.description))
 
             vertices = (['({},{})'.format(vertex.x, vertex.y)
                          for vertex in text.bounding_poly.vertices])
