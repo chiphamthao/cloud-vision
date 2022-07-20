@@ -2,7 +2,6 @@ import sys, os, io
 
 class ObjectLocalization:
     key = "/Users/macair/Downloads/delta-guild-354701-7d01beb6d1f3.json"
-    
     def __init__(self, path):
         self.imageLabels = []
         self.path = path

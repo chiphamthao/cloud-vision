@@ -1,10 +1,13 @@
-import sys, os
-from TextRecognitor import TextRecognitor
+import sys, os, tempfile
+from ObjectLocalization import ObjectLocalization
+from TextRecognizer import TextRecognizer
 from DragNDrop import DragNDrop
+from TextToSpeech import TextToSpeech
 from PyQt6.QtQml import QQmlApplicationEngine
-from PyQt6.QtWidgets import QApplication, QWidget, QLabel, QVBoxLayout
-from PyQt6.QtCore import Qt
+from PyQt6.QtWidgets import QApplication, QWidget, QLabel, QVBoxLayout, QPushButton
+from PyQt6.QtCore import Qt, QUrl, QFileInfo
 from PyQt6.QtGui import QPixmap
+from PyQt6.QtMultimedia import QAudioOutput, QMediaPlayer
 
 class ObjectDetector(QWidget):
 
@@ -22,6 +25,14 @@ class ObjectDetector(QWidget):
         self.mainLayout.addWidget(QLabel("Results: "))
     
         self.setLayout(self.mainLayout)
+
+        btn = QPushButton('Play', clicked=self.playAudioFile)
+        self.mainLayout.addWidget(btn)
+
+        self.player = QMediaPlayer()
+        self.audio_output = QAudioOutput()
+
+        self.temp = tempfile.NamedTemporaryFile(suffix=".mp3")
 
     def dragEnterEvent(self, event):
         if event.mimeData().hasImage:
