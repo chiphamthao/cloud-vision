@@ -6,7 +6,8 @@ from PyQt6.QtWidgets import QApplication, QWidget, QLabel, QVBoxLayout
 from PyQt6.QtCore import Qt
 from PyQt6.QtGui import QPixmap
 
-class ObjectDetector(QWidget, TextRecognitor):
+class ObjectDetector(QWidget):
+
     def __init__(self):
         super().__init__()
 
@@ -39,8 +40,15 @@ class ObjectDetector(QWidget, TextRecognitor):
             event.setDropAction(Qt.DropAction.CopyAction)
             file_path = event.mimeData().urls()[0].toLocalFile()
             self.set_image(file_path)
-            self.detect_text(file_path)
-            self.showResults(self.labels)
+
+            objectImage = TextRecognizer(file_path)
+            result = objectImage.detect_text()
+            showLabel = ObjectLocalization(file_path)
+            showLabel.localize_objects()
+
+            fullSentence = "The " + showLabel.imageLabels[0] + " says " + result[1]
+            print(fullSentence)
+            self.showResults(result[0], fullSentence)
 
             event.accept()
         else:
@@ -49,11 +57,22 @@ class ObjectDetector(QWidget, TextRecognitor):
     def set_image(self, file_path):
         self.photoViewer.setPixmap(QPixmap(file_path))
 
-    def showResults(self, labels):
-        print(len(labels))
+    def showResults(self, labels, sentence):
         for label in labels:
             print(label)
-            self.mainLayout.addWidget(QLabel(label + ", "))
+            self.mainLayout.addWidget(QLabel(label + ","))
+            
+        showSpeech = TextToSpeech(sentence, self.temp.name)
+        showSpeech.text_to_speech()
+
+    def playAudioFile(self):
+        filename = self.temp.name
+        self.player.setAudioOutput(self.audio_output)
+        self.player.setSource(QUrl.fromLocalFile(filename))
+        self.audio_output.setVolume(0.7)
+        self.player.play()
+
+        #self.temp.close()
 
 app = QApplication([])
 demo = ObjectDetector()
