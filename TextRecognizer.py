@@ -2,6 +2,7 @@ import io
 import os
 
 class TextRecognizer: 
+    key = "/Users/macair/Downloads/delta-guild-354701-7d01beb6d1f3.json"
     def __init__(self, path):
         #super().__init__()
         self.path = path
@@ -9,7 +10,7 @@ class TextRecognizer:
     def detect_text(self):
         """Detects text in the file."""
         from google.cloud import vision
-        os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "/Users/macair/Downloads/delta-guild-354701-7d01beb6d1f3.json"
+        os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = self.key
 
         client = vision.ImageAnnotatorClient()
 
