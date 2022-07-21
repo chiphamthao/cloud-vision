@@ -37,6 +37,7 @@ class ObjectDetector(QWidget):
     def dragEnterEvent(self, event):
         if event.mimeData().hasImage:
             event.accept()
+
         else:
             event.ignore()
 
@@ -48,6 +49,7 @@ class ObjectDetector(QWidget):
 
     def dropEvent(self, event):
         if event.mimeData().hasImage:
+            
             event.setDropAction(Qt.DropAction.CopyAction)
             file_path = event.mimeData().urls()[0].toLocalFile()
             self.set_image(file_path)
@@ -55,9 +57,9 @@ class ObjectDetector(QWidget):
             objectImage = TextRecognizer(file_path)
             result = objectImage.detect_text()
             showLabel = ObjectLocalization(file_path)
-            showLabel.localize_objects()
+            objectList = showLabel.localize_objects()
 
-            fullSentence = "The " + showLabel.imageLabels[0] + " says " + result[1]
+            fullSentence = "The " + objectList[0] + " says " + result[1]
             print(fullSentence)
             self.showResults(result[0], fullSentence)
 
@@ -82,8 +84,8 @@ class ObjectDetector(QWidget):
         self.player.setSource(QUrl.fromLocalFile(filename))
         self.audio_output.setVolume(0.7)
         self.player.play()
+        self.temp.close()
 
-        #self.temp.close()
 
 app = QApplication([])
 demo = ObjectDetector()

@@ -4,7 +4,6 @@ import os
 class TextRecognizer: 
     key = "/Users/macair/Downloads/delta-guild-354701-7d01beb6d1f3.json"
     def __init__(self, path):
-        #super().__init__()
         self.path = path
         
     def detect_text(self):
