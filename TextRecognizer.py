@@ -2,19 +2,17 @@ import io
 import os
 
 class TextRecognizer: 
-    key = "/Users/macair/Downloads/delta-guild-354701-7d01beb6d1f3.json"
-    def __init__(self, path):
-        #super().__init__()
-        self.path = path
-        
-    def detect_text(self):
+    def __init__(self):
+        self.key = "/Users/macair/Downloads/delta-guild-354701-7d01beb6d1f3.json"
+
+    def detect_text(self, path):
         """Detects text in the file."""
         from google.cloud import vision
         os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = self.key
 
         client = vision.ImageAnnotatorClient()
 
-        with io.open(self.path, 'rb') as image_file:
+        with io.open(path, 'rb') as image_file:
             content = image_file.read()
 
         image = vision.Image(content=content)

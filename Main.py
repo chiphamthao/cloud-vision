@@ -1,9 +1,9 @@
-from ObjectDetector import ObjectDetector
+from MainWidget import MainWidget
 from PyQt6.QtWidgets import QApplication
 
 def main():
     app = QApplication([])
-    demo = ObjectDetector()
+    demo = MainWidget()
     demo.show()
     app.exec()
 
