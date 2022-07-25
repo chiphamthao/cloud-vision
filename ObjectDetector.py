@@ -9,12 +9,8 @@ from PyQt6.QtCore import Qt, QUrl, QFileInfo
 from PyQt6.QtGui import QPixmap
 from PyQt6.QtMultimedia import QAudioOutput, QMediaPlayer
 
-<<<<<<< HEAD
 class ObjectDetector(QWidget):
 
-=======
-class ObjectDetector(QWidget, TextRecognizer):
->>>>>>> cloud-vision-ocr
     def __init__(self):
         super().__init__()
 
@@ -26,11 +22,7 @@ class ObjectDetector(QWidget, TextRecognizer):
         self.setWindowTitle("My app")
         self.photoViewer = DragNDrop()
         self.mainLayout.addWidget(self.photoViewer)
-<<<<<<< HEAD
-        self.mainLayout.addWidget(QLabel("Results: "))
-=======
         self.mainLayout.addWidget(QLabel("Press 'Play' to hear the results: "))
->>>>>>> cloud-vision-ocr
     
         self.setLayout(self.mainLayout)
 
@@ -45,10 +37,6 @@ class ObjectDetector(QWidget, TextRecognizer):
     def dragEnterEvent(self, event):
         if event.mimeData().hasImage:
             event.accept()
-<<<<<<< HEAD
-
-=======
->>>>>>> cloud-vision-ocr
         else:
             event.ignore()
 
@@ -60,7 +48,6 @@ class ObjectDetector(QWidget, TextRecognizer):
 
     def dropEvent(self, event):
         if event.mimeData().hasImage:
-<<<<<<< HEAD
             
             event.setDropAction(Qt.DropAction.CopyAction)
             file_path = event.mimeData().urls()[0].toLocalFile()
@@ -74,17 +61,6 @@ class ObjectDetector(QWidget, TextRecognizer):
             fullSentence = "The " + objectList[0] + " says " + result[1]
             print(fullSentence)
             self.showResults(result[0], fullSentence)
-=======
-            event.setDropAction(Qt.DropAction.CopyAction)
-            file_path = event.mimeData().urls()[0].toLocalFile()
-            self.set_image(file_path)
-            self.detect_text(file_path)
-            self.showLabel = ObjectLocalization()
-            self.showLabel.localize_objects(file_path)
-            fullSentence = "The " + self.showLabel.imageLabels[0] + " says " + self.sentence
-            print(fullSentence)
-            self.showResults(self.labels, fullSentence)
->>>>>>> cloud-vision-ocr
 
             event.accept()
         else:
@@ -94,20 +70,12 @@ class ObjectDetector(QWidget, TextRecognizer):
         self.photoViewer.setPixmap(QPixmap(file_path))
 
     def showResults(self, labels, sentence):
-<<<<<<< HEAD
         for label in labels:
             print(label)
             self.mainLayout.addWidget(QLabel(label + ","))
             
         showSpeech = TextToSpeech(sentence, self.temp.name)
         showSpeech.text_to_speech()
-=======
-        # for label in labels:
-        #     print(label)
-        #     self.mainLayout.addWidget(QLabel(label + ","))
-        self.showSpeech = TextToSpeech()
-        self.showSpeech.text_to_speech(sentence, self.temp.name)
->>>>>>> cloud-vision-ocr
 
     def playAudioFile(self):
         filename = self.temp.name
@@ -115,13 +83,8 @@ class ObjectDetector(QWidget, TextRecognizer):
         self.player.setSource(QUrl.fromLocalFile(filename))
         self.audio_output.setVolume(0.7)
         self.player.play()
-<<<<<<< HEAD
         self.temp.close()
 
-=======
-
-        #self.temp.close()
->>>>>>> cloud-vision-ocr
 
 app = QApplication([])
 demo = ObjectDetector()

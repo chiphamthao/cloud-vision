@@ -2,7 +2,6 @@ import html
 import io
 import os
 from TextRecognizer import TextRecognizer
-<<<<<<< HEAD
 from google.api_core.exceptions import AlreadyExists
 
 class TextToSpeech():
@@ -18,25 +17,6 @@ class TextToSpeech():
         os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = self.key
     
         escaped_lines = html.escape(self.text)
-=======
-
-# Imports the Google Cloud client libraries
-from google.api_core.exceptions import AlreadyExists
-
-class TextToSpeech(TextRecognizer):
-    def __init__(self):
-        super().__init__()
-
-    def text_to_speech(self, text, outfile):
-        from google.cloud import texttospeech
-        os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "/Users/macair/Downloads/delta-guild-354701-7d01beb6d1f3.json"
-    
-        # Replace special characters with HTML Ampersand Character Codes
-        # These Codes prevent the API from confusing text with
-        # SSML commands
-        # For example, '<' --> '&lt;' and '&' --> '&amp;'
-        escaped_lines = html.escape(text)
->>>>>>> cloud-vision-ocr
 
         # Convert plaintext to SSML in order to wait two seconds
         #   between each line in synthetic speech
@@ -70,16 +50,9 @@ class TextToSpeech(TextRecognizer):
 
         response = client.synthesize_speech(request=request)
 
-<<<<<<< HEAD
         with open(self.outfile, "w+b") as out:
             out.write(response.audio_content)
             print("Audio content written to file " + self.outfile)
-=======
-        # Writes the synthetic audio to the output file.
-        with open(outfile, "w+b") as out:
-            out.write(response.audio_content)
-            print("Audio content written to file " + outfile)
->>>>>>> cloud-vision-ocr
 
 
                                      
